@@ -2,6 +2,9 @@ package test;
 import game.Card;
 import game.Deck;
 import org.junit.jupiter.api.Test;
+
+import java.util.concurrent.ThreadLocalRandom;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DeckTest {
@@ -39,6 +42,20 @@ public class DeckTest {
             assertEquals(i * 13,correctAmounts[11]);
             assertEquals(i * 13,correctAmounts[12]);
             assertEquals(i * 13,correctAmounts[13]);
+        }
+    }
+
+    /**
+     * Make sure 1 deck cuts correctly
+     */
+    @Test
+    public void test_validCut() {
+        int randomInt = ThreadLocalRandom.current().nextInt(0,52);
+        Deck standardDeck = new Deck(1);
+        Card[] cutDeck = new Deck(1).cut(randomInt);
+        for(int i = 0; i < randomInt+1; i++) {
+            assertEquals(standardDeck.getCard(i), cutDeck[51-randomInt]);
+            randomInt--;
         }
     }
 }

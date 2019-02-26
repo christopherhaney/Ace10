@@ -27,7 +27,7 @@ public class Deck {
     }
 
     /**
-     * Shuffle (randomize order of) a game.Card[] deck using Fisher-Yates algo
+     * Shuffle (randomize order of) a game.Card[] deck using Fisher-Yates algorithm
      */
     public void shuffle() {
         for(int i = cardDeck.length - 1; i > 0; i--) {
@@ -41,11 +41,27 @@ public class Deck {
         }
     }
 
+    /**
+     *
+     * @param cutIndex: The index at which to cut the deck
+     *                NOTE: THE PLAYER WILL ENTER INDEX+1 FOR USER CONVENIENCE, ALLOWED FOR 1 DECK ONLY
+     */
+    public Card[] cut(int cutIndex) {
+        Card[] cutCardArray = new Card[cutIndex+1];
+        Card[] returnArray = new Card[52];
+        System.arraycopy(cardDeck,0,cutCardArray,0,cutCardArray.length); //Copy elements to be cut into temp array
+        System.arraycopy(cardDeck,cutIndex+1,returnArray,0,cardDeck.length-cutCardArray.length); //Move elements cutIndex cards back in original array
+        System.arraycopy(cutCardArray,0,returnArray,51-cutIndex,cutCardArray.length); //Copy temp array to end of original array
+        return returnArray;
+    }
+
     public int getTop() { return top; }
 
     public int getDeckSize() { return cardDeck.length; }
 
     public int getNumDecks() { return numDecks; }
+
+    public Card getCard(int i) { return cardDeck[i];}
 
     public void resetTop() { top = 0; }
 }

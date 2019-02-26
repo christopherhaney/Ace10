@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="33cf3c1e-4f9c-4122-b1cb-b3a3f6e669e3" name="Default Changelist" comment="" />
+    <list default="true" id="33cf3c1e-4f9c-4122-b1cb-b3a3f6e669e3" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/game/CommandLine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Ace10/game/Deck.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ace10/game/Deck.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Ace10/game/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ace10/game/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Ace10/game/Round.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ace10/game/Round.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Ace10/test/DeckTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Ace10/test/DeckTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/game/Round.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Round.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/DeckTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/DeckTest.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,31 +26,10 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/Round.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/DeckTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/game/Deck.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="174">
-              <caret line="29" column="78" selection-start-line="29" selection-start-column="78" selection-end-line="29" selection-end-column="78" />
+            <state relative-caret-position="343">
+              <caret line="56" column="73" selection-start-line="56" selection-start-column="73" selection-end-line="56" selection-end-column="73" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -48,10 +38,35 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/game/Main.java">
+        <entry file="file://$PROJECT_DIR$/src/game/Deck.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+            <state relative-caret-position="286">
+              <caret line="48" column="37" lean-forward="true" selection-start-line="48" selection-start-column="37" selection-end-line="48" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/game/CommandLine.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="514">
+              <caret line="31" column="31" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
+              <folding>
+                <element signature="e#620#621#0" expanded="true" />
+                <element signature="e#652#653#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/game/Round.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1121">
+              <caret line="61" column="15" selection-start-line="61" selection-start-column="15" selection-end-line="61" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -61,10 +76,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="38">
               <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-              <folding>
-                <element signature="e#2392#2393#0" expanded="true" />
-                <element signature="e#2425#2426#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -72,8 +83,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/game/Card.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="8" column="67" lean-forward="true" selection-start-line="8" selection-start-column="67" selection-end-line="8" selection-end-column="67" />
+            <state relative-caret-position="304">
+              <caret line="16" selection-start-line="16" selection-end-line="16" />
             </state>
           </provider>
         </entry>
@@ -112,6 +123,9 @@
       <find>shuffle</find>
       <find>singledeck</find>
       <find>numdecks</find>
+      <find>isaceeleven</find>
+      <find>while</find>
+      <find>arrayc</find>
     </findStrings>
     <replaceStrings>
       <replace>playerHardValue</replace>
@@ -150,17 +164,21 @@
         <option value="$PROJECT_DIR$/src/java/test/DeckTest.java" />
         <option value="$PROJECT_DIR$/src/java/Main.java" />
         <option value="$PROJECT_DIR$/src/Round.java" />
-        <option value="$PROJECT_DIR$/src/game/Deck.java" />
-        <option value="$PROJECT_DIR$/src/test/DeckTest.java" />
         <option value="$PROJECT_DIR$/src/game/SingleDeck.java" />
         <option value="$PROJECT_DIR$/src/game/Card.java" />
+        <option value="$PROJECT_DIR$/src/game/Main.java" />
+        <option value="$PROJECT_DIR$/src/game/CommandLine.java" />
+        <option value="$PROJECT_DIR$/src/game/Round.java" />
+        <option value="$PROJECT_DIR$/src/test/DeckTest.java" />
+        <option value="$PROJECT_DIR$/src/game/Deck.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="79" />
     <option name="y" value="28" />
-    <option name="width" value="1920" />
-    <option name="height" value="1052" />
+    <option name="width" value="1717" />
+    <option name="height" value="942" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -190,6 +208,12 @@
             </path>
             <path>
               <item name="Ace10" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Ace10" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Ace10" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
           </expand>
@@ -203,7 +227,7 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550962981392" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551216785175" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/junit-jupiter-api-5.4.0.jar!/" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
@@ -233,7 +257,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.DeckTest.test_validCut">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="game.Main" />
       <module name="Ace10" />
@@ -246,6 +270,22 @@
     <configuration name="Main" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="game.Main" />
       <module name="Ace10" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DeckTest.test_validCut" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Ace10" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="test" />
+      <option name="MAIN_CLASS_NAME" value="test.DeckTest" />
+      <option name="METHOD_NAME" value="test_validCut" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -280,9 +320,11 @@
       <item itemvalue="Application.Main" />
       <item itemvalue="JUnit.DeckTest.test_validDeckCreation" />
       <item itemvalue="JUnit.DeckTest.test_validShuffle" />
+      <item itemvalue="JUnit.DeckTest.test_validCut" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.DeckTest.test_validCut" />
         <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.DeckTest.test_validShuffle" />
         <item itemvalue="JUnit.DeckTest.test_validDeckCreation" />
@@ -303,42 +345,42 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="DeckTest_test_validShuffle - 2019.02.23 at 15h 37m 45s.xml">
-      <configuration name="DeckTest.test_validShuffle" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.25 at 17h 45m 11s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeckTest_test_validShuffle - 2019.02.23 at 15h 37m 47s.xml">
-      <configuration name="DeckTest.test_validShuffle" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.25 at 17h 51m 00s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeckTest_test_validDeckCreation - 2019.02.23 at 15h 38m 00s.xml">
-      <configuration name="DeckTest.test_validDeckCreation" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.25 at 17h 51m 03s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeckTest_test_validShuffle - 2019.02.23 at 15h 38m 05s.xml">
-      <configuration name="DeckTest.test_validShuffle" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.25 at 18h 08m 14s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeckTest_test_validShuffle - 2019.02.23 at 15h 38m 55s.xml">
-      <configuration name="DeckTest.test_validShuffle" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.25 at 18h 08m 17s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeckTest_test_validShuffle - 2019.02.23 at 15h 39m 35s.xml">
-      <configuration name="DeckTest.test_validShuffle" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.26 at 14h 28m 36s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeckTest_test_validShuffle - 2019.02.23 at 15h 39m 41s.xml">
-      <configuration name="DeckTest.test_validShuffle" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.26 at 14h 31m 26s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeckTest_test_validShuffle - 2019.02.23 at 15h 43m 08s.xml">
-      <configuration name="DeckTest.test_validShuffle" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.26 at 14h 31m 27s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeckTest_test_validShuffle - 2019.02.23 at 15h 44m 09s.xml">
-      <configuration name="DeckTest.test_validShuffle" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.26 at 14h 31m 45s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DeckTest_test_validShuffle - 2019.02.23 at 15h 50m 04s.xml">
-      <configuration name="DeckTest.test_validShuffle" configurationId="JUnit" />
+    <history-entry file="DeckTest_test_validCut - 2019.02.26 at 14h 31m 55s.xml">
+      <configuration name="DeckTest.test_validCut" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="28" width="1920" height="1052" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.551447" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.55894965" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -348,14 +390,14 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32896176" />
       <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32968238" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39717084" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39649507" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.3264418" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.3263965" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -367,7 +409,7 @@
       <window_info anchor="right" id="Coverage" order="8" side_tool="true" weight="0.329582" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.5273312" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.55894965" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -375,25 +417,25 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3297062" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39825898" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32896176" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32968238" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39649507" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Messages" order="10" weight="0.3297062" />
-      <window_info anchor="right" id="Coverage" order="0" side_tool="true" weight="0.329582" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="4" />
-      <window_info anchor="right" id="Maven" order="5" />
-      <window_info anchor="right" id="Theme Preview" order="6" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.3263965" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Maven" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Coverage" order="8" side_tool="true" weight="0.329582" />
     </layout-to-restore>
   </component>
   <component name="XDebuggerManager">
@@ -401,9 +443,15 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/DeckTest.java</url>
-          <line>18</line>
+          <line>21</line>
           <properties />
           <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/DeckTest.java</url>
+          <line>56</line>
+          <properties />
+          <option name="timeStamp" value="43" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -430,7 +478,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/Statistics.java" />
-    <entry file="file://$PROJECT_DIR$/src/test/DeckTest.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/package-info.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/java/Card.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/java/Deck.java" />
@@ -478,24 +525,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/Round.java">
+    <entry file="file://$PROJECT_DIR$/src/game/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        <state relative-caret-position="152">
+          <caret line="8" column="24" selection-start-line="8" selection-start-column="24" selection-end-line="8" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/junit-jupiter-api-5.4.0.jar!/org/junit/jupiter/api/Assertions.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="573" selection-start-line="573" selection-end-line="573" />
+          <folding>
+            <element signature="e#19319#19320#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/junit-jupiter-api-5.4.0.jar!/org/junit/jupiter/api/AssertionUtils.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="77" selection-start-line="77" selection-end-line="77" />
+          <folding>
+            <element signature="e#1823#1824#0" expanded="true" />
+            <element signature="e#1902#1903#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="jar://$PROJECT_DIR$/lib/junit-platform-commons-1.4.0.jar!/org/junit/platform/commons/util/ReflectionUtils.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
-          <caret line="313" column="15" lean-forward="true" selection-start-line="313" selection-start-column="15" selection-end-line="313" selection-end-column="15" />
+        <state relative-caret-position="249">
+          <caret line="308" column="22" lean-forward="true" selection-start-line="308" selection-start-column="22" selection-end-line="308" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/Card.java">
+    <entry file="jar://$PROJECT_DIR$/lib/junit-jupiter-api-5.4.0.jar!/org/junit/jupiter/api/AssertEquals.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="8" column="67" lean-forward="true" selection-start-line="8" selection-start-column="67" selection-end-line="8" selection-end-column="67" />
+        <state relative-caret-position="573">
+          <caret line="194" selection-start-line="194" selection-end-line="194" />
+          <folding>
+            <element signature="e#5412#5413#0" expanded="true" />
+            <element signature="e#5472#5473#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game/Round.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1121">
+          <caret line="61" column="15" selection-start-line="61" selection-start-column="15" selection-end-line="61" selection-end-column="15" />
         </state>
       </provider>
     </entry>
@@ -503,37 +582,44 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
           <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game/Card.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/DeckTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="343">
+          <caret line="56" column="73" selection-start-line="56" selection-start-column="73" selection-end-line="56" selection-end-column="73" />
           <folding>
-            <element signature="e#2392#2393#0" expanded="true" />
-            <element signature="e#2425#2426#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/game/CommandLine.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="514">
+          <caret line="31" column="31" selection-start-line="31" selection-start-column="31" selection-end-line="31" selection-end-column="31" />
+          <folding>
+            <element signature="e#620#621#0" expanded="true" />
+            <element signature="e#652#653#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/game/Deck.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="29" column="78" selection-start-line="29" selection-start-column="78" selection-end-line="29" selection-end-column="78" />
+        <state relative-caret-position="286">
+          <caret line="48" column="37" lean-forward="true" selection-start-line="48" selection-start-column="37" selection-end-line="48" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/DeckTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="18" column="36" lean-forward="true" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
         </state>
       </provider>
     </entry>

@@ -59,35 +59,35 @@ public class Round {
     /**
      * Check who won and payout accordingly
      */
-    public Winner finishRound() {
+    public void finishRound() {
         try {
             if(playerHardValue > 21) {
                 System.out.println("Finish! Winner is: Dealer!");
                 System.out.println("Player had: " + playerHardValue);
                 System.out.println("Dealer had: " + dealerHardValue);
-                return Winner.DEALER;
+                //return Winner.DEALER;
             }
             if(dealerHardValue <= 21 && playerHardValue <= 21) {
                 if (dealerHardValue > playerHardValue) {
                     System.out.println("Finish! Winner is: Dealer!");
                     System.out.println("Player had: " + playerHardValue);
                     System.out.println("Dealer had: " + dealerHardValue);
-                    return Winner.DEALER;
+                    //return Winner.DEALER;
                 }
                 else if (dealerHardValue < playerHardValue) {
                     System.out.println("Finish! Winner is: Player!");
                     System.out.println("Player had: " + playerHardValue);
                     System.out.println("Dealer had: " + dealerHardValue);
-                    return Winner.PLAYER;
+                    //return Winner.PLAYER;
                 }
                 else {
                     System.out.println("Finish! Winner is: Player!");
                     System.out.println("Player had: " + playerHardValue);
                     System.out.println("Dealer had: " + dealerHardValue);
-                    return Winner.PUSH;
+                    //return Winner.PUSH;
                 }
             }
-            return Winner.PUSH;
+            //return Winner.PUSH;
         }
         finally {
             resetRound();
