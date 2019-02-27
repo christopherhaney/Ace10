@@ -1,61 +1,83 @@
 package test;
 import game.Card;
 import game.Deck;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import java.util.concurrent.ThreadLocalRandom;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DeckTest {
+    int randomCutIndex = ThreadLocalRandom.current().nextInt(0,52); //Random int used to cut deck for all tests
+    static Deck[] allDecksStandard = new Deck[8]; //Standard 1-8 deck shoes in order of suit, then rank (repeats every 52 cards)
+    static Deck[] allDecksShuffled = new Deck[8]; //Randomly shuffled 1-8 deck shoes used for all tests
 
     /**
-     * Make sure 1-8 deck shoes have every card they're supposed to (correct number of ranks and suits)
+     * Method to initialize standard and shuffled deck arrays for test methods
      */
-    @Test
-    public void test_validDeckCreation() {
-        for(int i = 1; i < 9; i++)
-        {
-            Deck temp = new Deck(i);
-            int[] correctAmounts = new int[14]; //At each index: Two through 10, Ace (11), clubs, diamonds, hearts, spades
-            for(int j = 0; j < 52 * i; j++) {
-                Card currentCard = temp.draw();
-                int currentValue = currentCard.getValue();
-                String currentSuit = currentCard.getSuit();
-                if(currentSuit.equals("CLUBS"))
-                    correctAmounts[10]++;
-                else if(currentSuit.equals("DIAMONDS"))
-                    correctAmounts[11]++;
-                else if(currentSuit.equals("HEARTS"))
-                    correctAmounts[12]++;
-                else if(currentSuit.equals("SPADES"))
-                    correctAmounts[13]++;
-                for(int k = 2; k < 12; k++)
-                    if(currentValue == k)
-                        correctAmounts[k-2]++;
-            }
-            for(int l = 0; l < 8; l++)
-                assertEquals(i * 4,correctAmounts[l]);
-            assertEquals(i * 16,correctAmounts[8]);
-            assertEquals(i * 4,correctAmounts[9]);
-            assertEquals(i * 13,correctAmounts[10]);
-            assertEquals(i * 13,correctAmounts[11]);
-            assertEquals(i * 13,correctAmounts[12]);
-            assertEquals(i * 13,correctAmounts[13]);
+    @BeforeAll
+    public static void initializeDecks() {
+        for(int i = 0; i < 8; i++) {
+            allDecksStandard[i] = new Deck(i+1);
+            allDecksShuffled[i] = new Deck(i+1);
+            allDecksShuffled[i].shuffle();
         }
     }
 
     /**
-     * Make sure 1 deck cuts correctly
+     * Test to verify all cards are present after 1-8 deck creation and shuffle, and 1-deck cut
+     */
+    @Test
+    public void test_deckIntact() {
+        for(int i = 0; i < 8; i++) {
+            test_validDeck(allDecksStandard[i]);
+            test_validDeck(allDecksShuffled[i]);
+        }
+        allDecksShuffled[0].cut(randomCutIndex); //Only need to cut 1-deck shoe
+        test_validDeck(allDecksShuffled[0]);
+    }
+
+    /**
+     * Test to verify 1-8 deck shoes have every card they're supposed to (correct amount of values and suits)
+     */
+    public void test_validDeck(Deck temp) {
+        temp.resetTop();
+        int numDecks = temp.getNumDecks();
+        int[] numberOfCards = new int[14]; //At each index: Two through 10, Ace (11), clubs, diamonds, hearts, spades
+        for(int j = 0; j < 52 * numDecks; j++) {
+            Card currentCard = temp.draw();
+            int currentValue = currentCard.getValue();
+            String currentSuit = currentCard.getSuit();
+            if(currentSuit.equals("CLUBS"))
+                numberOfCards[10]++;
+            else if(currentSuit.equals("DIAMONDS"))
+                numberOfCards[11]++;
+            else if(currentSuit.equals("HEARTS"))
+                numberOfCards[12]++;
+            else if(currentSuit.equals("SPADES"))
+                numberOfCards[13]++;
+            numberOfCards[currentValue-2]++;
+        }
+        for(int k = 0; k < 8; k++) {
+            assertEquals(numDecks * 4, numberOfCards[k]);
+        }
+        assertEquals(numDecks * 16,numberOfCards[8]);
+        assertEquals(numDecks * 4,numberOfCards[9]);
+        assertEquals(numDecks * 13,numberOfCards[10]);
+        assertEquals(numDecks * 13,numberOfCards[11]);
+        assertEquals(numDecks * 13,numberOfCards[12]);
+        assertEquals(numDecks * 13,numberOfCards[13]);
+    }
+
+    /**
+     * Test to verify 1 deck cuts correctly
      */
     @Test
     public void test_validCut() {
-        int randomInt = ThreadLocalRandom.current().nextInt(0,52);
-        Deck standardDeck = new Deck(1);
-        Card[] cutDeck = new Deck(1).cut(randomInt);
-        for(int i = 0; i < randomInt+1; i++) {
-            assertEquals(standardDeck.getCard(i), cutDeck[51-randomInt]);
-            randomInt--;
+        Card[] tempArray = allDecksShuffled[0].getCopyOfDeck();
+        allDecksShuffled[0].cut(randomCutIndex);
+        for(int i = 0; i < randomCutIndex+1; i++) {
+            assertEquals(tempArray[i], allDecksShuffled[0].getCard(51-randomCutIndex));
+            randomCutIndex--;
         }
     }
 }

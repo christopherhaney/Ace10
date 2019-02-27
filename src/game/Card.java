@@ -15,11 +15,15 @@ public class Card {
         this.suit = suit;
     }
 
-    public int getValue() { return value; }
+    public int getValue() {
+        return value;
+    }
 
     public String getRank() {
         return rank;
     }
 
-    public String getSuit() { return suit; }
+    public String getSuit() {
+        return suit;
+    }
 }
