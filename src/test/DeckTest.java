@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.util.concurrent.ThreadLocalRandom;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class DeckTest {
     int randomCutIndex = ThreadLocalRandom.current().nextInt(0,52); //Random int used to cut deck for all tests
@@ -31,6 +32,7 @@ public class DeckTest {
         for(int i = 0; i < 8; i++) {
             test_validDeck(allDecksStandard[i]);
             test_validDeck(allDecksShuffled[i]);
+            //test_distinctShuffle(allDecksShuffled[i],allDecksStandard[i]);
         }
         allDecksShuffled[0].cut(randomCutIndex); //Only need to cut 1-deck shoe
         test_validDeck(allDecksShuffled[0]);
@@ -80,4 +82,14 @@ public class DeckTest {
             randomCutIndex--;
         }
     }
+
+    /**
+     * Test to verify shuffle is completely distinct, MAY NEED TO IMPROVE SHUFFLE ALGO
+    @Test
+    public void test_distinctShuffle(Deck tempShuffled, Deck tempStandard) {
+        for(int i = 0; i < tempShuffled.getDeckSize(); i++) {
+            assertNotEquals(tempShuffled.getCard(i), tempStandard.getCard(i));
+        }
+    }
+    */
 }

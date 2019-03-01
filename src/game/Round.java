@@ -1,124 +1,178 @@
 package game;
+import java.util.ArrayList;
 
-public class Round {
+public class Round extends AdvancedRules {
     private int dealerHardValue;
     private int dealerSoftValue;
     private int playerHardValue;
     private int playerSoftValue;
-    private int currentCardValue;
+    private int playerHitCount; //Used to determine if split or double down is allowed
     private Deck deck;
-
-    public enum Winner
-    {
-        PLAYER, DEALER, PUSH
-    }
+    private Card currentPlayerCard; //The current card that will be dealt to the player
+    private Card currentDealerCard; //The current card that will be dealt to the dealer
+    ArrayList<ArrayList<Card>> allPlayerHands = new ArrayList<>(2); //Initial capacity of only two hands since multi-splits are very rare
+    ArrayList<Card> dealerHand = new ArrayList<>(); //In standard hand, first card is always hidden,
 
     public Round() {
         deck = new Deck(1);
         deck.shuffle();
         dealerHardValue = 0;
         playerHardValue = 0;
-        currentCardValue = 0;
+        playerHitCount = 0;
     }
 
     public void roundBegin() {
-        dealerHardValue += deck.draw().getValue();
-        playerHardValue += deck.draw().getValue();
-        dealerHardValue += deck.draw().getValue();
-        playerHardValue += deck.draw().getValue();
-        blackJackCheck();
-    }
-
-    public void blackJackCheck() {
-        if(playerHardValue == 21 || dealerHardValue == 21) {
+        for(int i = 0; i < 2; i++) {
+            currentPlayerCard = deck.draw();
+            allPlayerHands.get(0).add(currentPlayerCard);
+            playerHardValue += aceHard(currentPlayerCard);
+            playerSoftValue += currentPlayerCard.getValue();
+            currentDealerCard = deck.draw();
+            dealerHand.add(currentDealerCard);
+            dealerHardValue += aceHard(currentPlayerCard);
+            dealerSoftValue += currentPlayerCard.getValue();
+        }
+        insuranceCheck(dealerHand.get(1));
+        if(isBlackJack(dealerSoftValue,playerSoftValue)) {
             finishRound();
         }
+        splitCheck(allPlayerHands.get(0),playerHitCount);
+    }
+
+    /**
+     * When an ace is hit, return 1 for the hard value
+     */
+    public int aceHard(Card currentPlayerCard) {
+        if(currentPlayerCard.getRank().equals("ACE")) {
+            return 1;
+        }
+        return currentPlayerCard.getValue();
     }
 
     public void playerHit() {
-        currentCardValue = isAceEleven(deck.draw().getValue());
-        playerHardValue += currentCardValue;
-        if(playerHardValue >= 21) {
-            finishRound();
+        currentPlayerCard = deck.draw();
+        playerHitCount++;
+        playerHardValue += aceHard(currentPlayerCard);
+        playerHardValue += currentPlayerCard.getValue();
+        if(playerHardValue >= 21 || playerSoftValue == 21) {
+            dealerDraws();
         }
     }
 
+    /**
+     * If the player stands, let the dealer draw
+     */
     public void playerStand() {
         dealerDraws();
     }
 
     /**
-     *
+     * Dealer draws after player
      */
     public void dealerDraws() {
-        while(dealerHardValue < 17)
-            dealerHardValue += isAceEleven(deck.draw().getValue());
+        while(dealerHardValue < 17 || dealerSoftValue < 18) { //ALLOW PLAYER TO CHANGE VALUES DEALER STANDS ON!!!!!!!!
+            currentDealerCard = deck.draw();
+            dealerHardValue += aceHard(currentDealerCard);
+            dealerSoftValue += currentDealerCard.getValue();
+        }
         finishRound();
     }
 
-    /**
-     * Check who won and payout accordingly
-     */
     public void finishRound() {
         try {
-            if(playerHardValue > 21) {
-                System.out.println("Finish! Winner is: Dealer!");
-                System.out.println("Player had: " + playerHardValue);
-                System.out.println("Dealer had: " + dealerHardValue);
-                //return Winner.DEALER;
+            int finalPlayerValue;
+            int finalDealerValue;
+            if(playerSoftValue > playerHardValue && playerSoftValue <= 21) {
+                finalPlayerValue = playerSoftValue;
             }
-            if(dealerHardValue <= 21 && playerHardValue <= 21) {
-                if (dealerHardValue > playerHardValue) {
-                    System.out.println("Finish! Winner is: Dealer!");
-                    System.out.println("Player had: " + playerHardValue);
-                    System.out.println("Dealer had: " + dealerHardValue);
-                    //return Winner.DEALER;
-                }
-                else if (dealerHardValue < playerHardValue) {
-                    System.out.println("Finish! Winner is: Player!");
-                    System.out.println("Player had: " + playerHardValue);
-                    System.out.println("Dealer had: " + dealerHardValue);
-                    //return Winner.PLAYER;
-                }
-                else {
-                    System.out.println("Finish! Winner is: Player!");
-                    System.out.println("Player had: " + playerHardValue);
-                    System.out.println("Dealer had: " + dealerHardValue);
-                    //return Winner.PUSH;
-                }
+            else {
+                finalPlayerValue = playerHardValue;
             }
-            //return Winner.PUSH;
+            if(dealerSoftValue > dealerHardValue && dealerSoftValue <= 21) {
+                finalDealerValue = dealerSoftValue;
+            }
+            else {
+                finalDealerValue = dealerHardValue;
+            }
+            payOut(checkWinner(finalPlayerValue,finalDealerValue));
         }
         finally {
             resetRound();
         }
     }
 
+    /**
+     * Check whether the dealer or player one
+     * Note: Boolean is used so that null represents a tie (push)
+     * @return true if player wins, false if dealer wins, null if push
+     */
+    public Boolean checkWinner(int finalPlayerValue, int finalDealerValue) {
+        if(finalPlayerValue > 21) {
+            return false;
+        }
+        else if(finalDealerValue > 21) {
+            return true;
+        }
+        if(finalPlayerValue <= 21 && finalDealerValue <= 21) {
+            if (finalPlayerValue > finalDealerValue) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        return null;
+    }
+
+    public void payOut(Boolean isWinner) {
+        if(isWinner) {
+            if(dealerSoftValue == 21) {
+                if(standardBlackjackPayout) {
+                    //3:2 blackjack payout
+                }
+                else {
+                    //6:5 blackjack payout
+                }
+            }
+            else {
+                //standard 2:1 payout
+            }
+        }
+        else if(!isWinner) {
+            //Keep bet
+        }
+        else if(isWinner == null) {
+            //Push. give bet back to player
+        }
+    }
+
     public void resetRound() {
         dealerHardValue = 0;
+        dealerSoftValue = 0;
         playerHardValue = 0;
-        currentCardValue = 0;
+        playerSoftValue = 0;
         if(deck.getTop() > (deck.getDeckSize() / 4)) { //OVER FOUR FOR NOW, LET PLAYER CHANGE/CHECK STANDARD SHUFFLE RATE LATER
             deck.shuffle();
-            deck.resetTop();
         }
+        allPlayerHands.clear();
+        dealerHand.clear();
+        playerHitCount = 0;
         roundBegin();
     }
 
-    public int getPlayerHardValue() {return playerHardValue; }
+    public int getPlayerHardValue() {
+        return playerHardValue;
+    }
 
-    public int getDealerHardValue() { return dealerHardValue; }
+    public int getDealerHardValue() {
+        return dealerHardValue;
+    }
 
-    public Deck getDeck() { return deck; }
+    public int getplayerHitCount() {
+        return playerHitCount;
+    }
 
-    /**
-     * When an ace is hit, determine whether it should be worth 11 or 1
-     */
-    public int isAceEleven(int cardValue) {
-        if(cardValue == 11) {
-            if(playerHardValue + cardValue > 21)
-                return 1;
-        }
-        return 11;
+    public Deck getDeck() {
+        return deck;
     }
 }

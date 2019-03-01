@@ -35,14 +35,12 @@ public class Deck {
     public void shuffle() {
         for(int i = cardDeck.length - 1; i > 0; i--) {
             int randomIndex = ThreadLocalRandom.current().nextInt(i + 1);
-            while(randomIndex == i) {
-                randomIndex = ThreadLocalRandom.current().nextInt(i + 1);
-            }
             //Swap elements at i and randomIndex
             Card a = cardDeck[randomIndex];
             cardDeck[randomIndex] = cardDeck[i];
             cardDeck[i] = a;
         }
+        top = 0;
     }
 
     /**
@@ -83,9 +81,5 @@ public class Deck {
 
     public Card getCard(int i) {
         return cardDeck[i];
-    }
-
-    public void resetTop() {
-        top = 0;
     }
 }

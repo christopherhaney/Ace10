@@ -36,4 +36,35 @@ public class CommandLine {
         if(keyboardScanner.next().equals("stand"))
             round.playerStand();
     }
+
+    public Boolean finishRound() {
+        try {
+            if(playerHardValue > 21) {
+                System.out.println("Finish! Winner is: Dealer!");
+                System.out.println("Player had: " + playerHardValue);
+                System.out.println("Dealer had: " + dealerHardValue);
+            }
+            if(dealerHardValue <= 21 && playerHardValue <= 21) {
+                if (dealerHardValue > playerHardValue) {
+                    System.out.println("Finish! Winner is: Dealer!");
+                    System.out.println("Player had: " + playerHardValue);
+                    System.out.println("Dealer had: " + dealerHardValue);
+                }
+                else if (dealerHardValue < playerHardValue) {
+                    System.out.println("Finish! Winner is: Player!");
+                    System.out.println("Player had: " + playerHardValue);
+                    System.out.println("Dealer had: " + dealerHardValue);
+                }
+                else {
+                    System.out.println("Finish! Winner is: Tie!");
+                    System.out.println("Player had: " + playerHardValue);
+                    System.out.println("Dealer had: " + dealerHardValue);
+                }
+            }
+            return null;
+        }
+        finally {
+            resetRound();
+        }
+    }
 }
