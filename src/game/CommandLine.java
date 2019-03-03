@@ -11,8 +11,9 @@ public class CommandLine  {
 
     public CommandLine() {
         keyboardScanner = new Scanner(System.in);
+        System.out.println("Welcome to Ace10! How many decks would you like to use? (1-8)");
         totalMoney = 100;
-        round = new Round(1);
+        round = new Round(keyboardScanner.nextInt());
         round.roundBegin();
         beginRound();
     }
@@ -54,9 +55,15 @@ public class CommandLine  {
         System.out.println("Hit!\n");
         printPlayerCards();
         printSoftValue();
-        System.out.println("Player Hard Value: " + round.getPlayerHardValue() + "\n");
-        System.out.println("\nDealer's face card: " + round.getDealerHand().get(1).getRank() + " of " + round.getDealerHand().get(1).getSuit());
-        System.out.println("Dealer's revealed total: " + round.getDealerHand().get(1).getValue());
+        if(round.getPlayerHardValue() > 21) {
+            System.out.println("\nBust!\n");
+            finishRound();
+        }
+        else {
+            System.out.println("Player Hard Value: " + round.getPlayerHardValue() + "\n");
+            System.out.println("\nDealer's face card: " + round.getDealerHand().get(1).getRank() + " of " + round.getDealerHand().get(1).getSuit());
+            System.out.println("Dealer's revealed total: " + round.getDealerHand().get(1).getValue());
+        }
     }
 
     public void playerStandPrint() {
@@ -66,7 +73,7 @@ public class CommandLine  {
     }
 
     /**
-     * Method to print the player's soft value if <= 21 OR != to the hard value
+     * Print the player's soft value if <= 21 or != to the hard value
      */
     public void printSoftValue() {
         if(round.getPlayerSoftValue() <= 21 && round.getPlayerSoftValue() != round.getPlayerHardValue()) {
@@ -76,9 +83,15 @@ public class CommandLine  {
 
     public void printPlayerCards() {
         int i = 0;
-        while(i < round.getPlayerHand().size()) {
-            System.out.println("Player Card " + (i+1) + ": " + round.getPlayerHand().get(i).getRank() + " of " + round.getPlayerHand().get(i).getSuit());
-            i++;
+        try {
+            while(i < round.getPlayerHand().size()) {
+                System.out.println("Player Card " + (i + 1) + ": " + round.getPlayerHand().get(i).getRank() + " of " + round.getPlayerHand().get(i).getSuit());
+                i++;
+                TimeUnit.SECONDS.sleep(1);
+            }
+        }
+        catch(InterruptedException e) {
+            System.err.println("Sleep delay error.");
         }
     }
 
@@ -90,11 +103,12 @@ public class CommandLine  {
             System.out.println("Dealer's revealed card: " + round.getDealerHand().get(0).getRank() + " of " + round.getDealerHand().get(0).getSuit());
             while(i < round.getDealerHand().size()) {
                 TimeUnit.SECONDS.sleep(1);
-                System.out.println("Dealer Card " + (i+1) + ": " + round.getDealerHand().get(i).getRank() + " of " + round.getDealerHand().get(i).getSuit());
+                System.out.println("Dealer Card " + (i + 1) + ": " + round.getDealerHand().get(i).getRank() + " of " + round.getDealerHand().get(i).getSuit());
                 i++;
             }
             System.out.println("Final dealer value is: " + round.getFinalDealerValue());
-            System.out.println("Final player value is: " + round.getFinalPlayerValue());
+            TimeUnit.SECONDS.sleep(1);
+            System.out.println("Final player value is: " + round.getFinalPlayerValue() + "\n");
             TimeUnit.SECONDS.sleep(1);
         }
         catch(InterruptedException e) {

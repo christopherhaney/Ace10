@@ -83,7 +83,7 @@ public class Round extends AdvancedRules {
      * Dealer draws after player
      */
     public void dealerDraws() {
-        while(dealerHardValue < 17 || dealerSoftValue < 18) { //ALLOW PLAYER TO CHANGE VALUES DEALER STANDS ON!!!!!!!!
+        while(dealerHardValue < 16 || dealerSoftValue < 17) { //ALLOW PLAYER TO CHANGE VALUES DEALER STANDS ON!!!!!!!!
             currentDealerCard = deck.draw();
             dealerHand.add(currentDealerCard);
             dealerHardValue += aceValueHard(currentDealerCard);
@@ -122,7 +122,7 @@ public class Round extends AdvancedRules {
             if(finalPlayerValue > finalDealerValue) {
                 return true;
             }
-            else {
+            else if(finalPlayerValue < finalDealerValue){
                 return false;
             }
         }
