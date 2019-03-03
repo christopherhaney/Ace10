@@ -6,8 +6,10 @@ public class Card {
     private String suit; //The card's suit, CLUBS, HEARTS, SPADES, DIAMONDS
 
     /**
-     * Default card constructor that takes in a value and sets it's rank accordingly
-     * @param value
+     * Default card constructor
+     * @param value: The numeric value of the card
+     * @param rank: The string rank of the card in ascending order of value (TWO through ACE)
+     * @param suit: The card's suit (HEARTS,CLUBS,DIAMONDS,SPADES)
      */
     public Card (int value, String rank, String suit) {
         this.value = value;

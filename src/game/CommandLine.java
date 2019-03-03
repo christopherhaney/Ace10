@@ -3,10 +3,10 @@ package game;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class CommandLine {
+public class CommandLine  {
     Scanner keyboardScanner;
     Round round;
-    int totalMoney;
+    private int totalMoney; //Starts as the money the player enters the game with, if it reaches 0 end game, if player quits add to database
     int totalDecks;
 
     public CommandLine() {
@@ -18,7 +18,7 @@ public class CommandLine {
     }
 
     public void playGame() {
-        String currentToken = keyboardScanner.nextLine();
+        String currentToken = keyboardScanner.nextLine().toLowerCase();
         if(currentToken.equals("hit")) {
             playerHitPrint();
         }
@@ -26,6 +26,7 @@ public class CommandLine {
             playerStandPrint();
         }
         else if(currentToken.equals("yes")) {
+            round.roundBegin();
             beginRound();
         }
         else if(currentToken.equals("no")) {
@@ -83,11 +84,21 @@ public class CommandLine {
 
     public void printDealerCards() {
         int i = 2;
-        System.out.println("\nDealer's face card: " + round.getDealerHand().get(1).getRank() + " of " + round.getDealerHand().get(1).getSuit());
-        System.out.println("\nDealer's revealed card: " + round.getDealerHand().get(0).getRank() + " of " + round.getDealerHand().get(0).getSuit());
-        while(i < round.getDealerHand().size()) {
-            System.out.println("Dealer Card " + (i+1) + ": " + round.getDealerHand().get(i).getRank() + " of " + round.getDealerHand().get(i).getSuit());
-            i++;
+        System.out.println("Dealer's face card: " + round.getDealerHand().get(1).getRank() + " of " + round.getDealerHand().get(1).getSuit());
+        try {
+            TimeUnit.SECONDS.sleep(1);
+            System.out.println("Dealer's revealed card: " + round.getDealerHand().get(0).getRank() + " of " + round.getDealerHand().get(0).getSuit());
+            while(i < round.getDealerHand().size()) {
+                TimeUnit.SECONDS.sleep(1);
+                System.out.println("Dealer Card " + (i+1) + ": " + round.getDealerHand().get(i).getRank() + " of " + round.getDealerHand().get(i).getSuit());
+                i++;
+            }
+            System.out.println("Final dealer value is: " + round.getFinalDealerValue());
+            System.out.println("Final player value is: " + round.getFinalPlayerValue());
+            TimeUnit.SECONDS.sleep(1);
+        }
+        catch(InterruptedException e) {
+            System.err.println("Sleep delay error.");
         }
     }
 
@@ -95,6 +106,7 @@ public class CommandLine {
         round.calculateFinalValues();
         Boolean finalWinner = round.checkWinner(round.getFinalPlayerValue(),round.getFinalDealerValue());
         round.payOut(finalWinner);
+        printDealerCards();
         if(finalWinner) {
             System.out.println("You win! Bet returned.\nTotal money is now: " + totalMoney + "\n");
         }
@@ -104,7 +116,7 @@ public class CommandLine {
         else if(finalWinner == null) {
             System.out.println("Push! Bet returned.\nTotal money is now: " + totalMoney + "\n");
         }
-        System.out.println("Play again? 'yes' or 'no");
-        //round.resetRound();
+        round.resetRound();
+        System.out.println("Play again? 'Yes' or 'No'");
     }
 }
