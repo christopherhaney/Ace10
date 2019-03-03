@@ -1,70 +1,110 @@
 package game;
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class CommandLine {
     Scanner keyboardScanner;
     Round round;
+    int totalMoney;
+    int totalDecks;
 
     public CommandLine() {
         keyboardScanner = new Scanner(System.in);
-        round = new Round();
+        totalMoney = 100;
+        round = new Round(1);
         round.roundBegin();
-        System.out.println("Beginning round...");
-        System.out.println("Player has: " + round.getPlayerHardValue());
-        System.out.println("Player has: " + round.getPlayerHardValue());
-        System.out.println("Dealer has: " + round.getPlayerHardValue());
-        System.out.println("Top is: " + round.getDeck().getTop());
+        beginRound();
     }
 
     public void playGame() {
-        playerHitPrint();
+        String currentToken = keyboardScanner.nextLine();
+        if(currentToken.equals("hit")) {
+            playerHitPrint();
+        }
+        else if(currentToken.equals("stand")) {
+            playerStandPrint();
+        }
+        else if(currentToken.equals("yes")) {
+            beginRound();
+        }
+        else if(currentToken.equals("no")) {
+            System.out.println("Thanks for playing!");
+            System.exit(0);
+        }
+    }
+
+    public void beginRound() {
+        System.out.println("Beginning round...\n");
+        printPlayerCards();
+        if(round.getPlayerSoftValue() == round.getPlayerHardValue()) {
+            System.out.println("Player Hard Value: " + round.getPlayerHardValue());
+        }
+        else {
+            System.out.println("Player Soft Value: " + round.getPlayerSoftValue());
+            System.out.println("Player Hard Value: " + round.getPlayerHardValue());
+        }
+        System.out.println("\nDealer's face card: " + round.getDealerHand().get(1).getRank() + " of " + round.getDealerHand().get(1).getSuit());
+        System.out.println("Dealer's revealed total: " + round.getDealerHand().get(1).getValue());
     }
 
     public void playerHitPrint() {
-        if(keyboardScanner.next().equals("hit")) {
-            round.playerHit();
-            System.out.println("Hit!\nPlayer value is now: " + round.getPlayerHardValue());
-            System.out.println("Dealer value is now: " + round.getDealerHardValue());
-            System.out.println("Top is: " + round.getDeck().getTop());
-        }
-        else
-            playerStandPrint();
+        round.playerHit();
+        System.out.println("Hit!\n");
+        printPlayerCards();
+        printSoftValue();
+        System.out.println("Player Hard Value: " + round.getPlayerHardValue() + "\n");
+        System.out.println("\nDealer's face card: " + round.getDealerHand().get(1).getRank() + " of " + round.getDealerHand().get(1).getSuit());
+        System.out.println("Dealer's revealed total: " + round.getDealerHand().get(1).getValue());
     }
 
     public void playerStandPrint() {
-        if(keyboardScanner.next().equals("stand"))
-            round.playerStand();
+        System.out.println("Stand!\n");
+        round.playerStand();
+        finishRound();
     }
 
-    public Boolean finishRound() {
-        try {
-            if(playerHardValue > 21) {
-                System.out.println("Finish! Winner is: Dealer!");
-                System.out.println("Player had: " + playerHardValue);
-                System.out.println("Dealer had: " + dealerHardValue);
-            }
-            if(dealerHardValue <= 21 && playerHardValue <= 21) {
-                if (dealerHardValue > playerHardValue) {
-                    System.out.println("Finish! Winner is: Dealer!");
-                    System.out.println("Player had: " + playerHardValue);
-                    System.out.println("Dealer had: " + dealerHardValue);
-                }
-                else if (dealerHardValue < playerHardValue) {
-                    System.out.println("Finish! Winner is: Player!");
-                    System.out.println("Player had: " + playerHardValue);
-                    System.out.println("Dealer had: " + dealerHardValue);
-                }
-                else {
-                    System.out.println("Finish! Winner is: Tie!");
-                    System.out.println("Player had: " + playerHardValue);
-                    System.out.println("Dealer had: " + dealerHardValue);
-                }
-            }
-            return null;
+    /**
+     * Method to print the player's soft value if <= 21 OR != to the hard value
+     */
+    public void printSoftValue() {
+        if(round.getPlayerSoftValue() <= 21 && round.getPlayerSoftValue() != round.getPlayerHardValue()) {
+            System.out.println("Player Soft Value: " + round.getPlayerSoftValue());
         }
-        finally {
-            resetRound();
+    }
+
+    public void printPlayerCards() {
+        int i = 0;
+        while(i < round.getPlayerHand().size()) {
+            System.out.println("Player Card " + (i+1) + ": " + round.getPlayerHand().get(i).getRank() + " of " + round.getPlayerHand().get(i).getSuit());
+            i++;
         }
+    }
+
+    public void printDealerCards() {
+        int i = 2;
+        System.out.println("\nDealer's face card: " + round.getDealerHand().get(1).getRank() + " of " + round.getDealerHand().get(1).getSuit());
+        System.out.println("\nDealer's revealed card: " + round.getDealerHand().get(0).getRank() + " of " + round.getDealerHand().get(0).getSuit());
+        while(i < round.getDealerHand().size()) {
+            System.out.println("Dealer Card " + (i+1) + ": " + round.getDealerHand().get(i).getRank() + " of " + round.getDealerHand().get(i).getSuit());
+            i++;
+        }
+    }
+
+    public void finishRound() {
+        round.calculateFinalValues();
+        Boolean finalWinner = round.checkWinner(round.getFinalPlayerValue(),round.getFinalDealerValue());
+        round.payOut(finalWinner);
+        if(finalWinner) {
+            System.out.println("You win! Bet returned.\nTotal money is now: " + totalMoney + "\n");
+        }
+        else if(!finalWinner) {
+            System.out.println("Dealer wins! Bet lost.\nTotal money is now: " + totalMoney + "\n");
+        }
+        else if(finalWinner == null) {
+            System.out.println("Push! Bet returned.\nTotal money is now: " + totalMoney + "\n");
+        }
+        System.out.println("Play again? 'yes' or 'no");
+        //round.resetRound();
     }
 }

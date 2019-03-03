@@ -42,7 +42,7 @@ public class DeckTest {
      * Test to verify 1-8 deck shoes have every card they're supposed to (correct amount of values and suits)
      */
     public void test_validDeck(Deck temp) {
-        temp.resetTop();
+        temp.setTop(0);
         int numDecks = temp.getNumDecks();
         int[] numberOfCards = new int[14]; //At each index: Two through 10, Ace (11), clubs, diamonds, hearts, spades
         for(int j = 0; j < 52 * numDecks; j++) {

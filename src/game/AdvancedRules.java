@@ -8,6 +8,7 @@ public class AdvancedRules {
     public boolean surrenderEnabled; //Gives the player the option to surrender after the initial draw
     public boolean splitEnabled; //Gives the player the option to split if initial hand is two cards of the same rank
     public boolean standardBlackjackPayout; //3:2 if true, 6:5 if false
+    public boolean isBlackjack;
 
     public void doubleDown(int currentBet, int playerHitCount) {
         if(playerHitCount == 0) {
@@ -17,7 +18,8 @@ public class AdvancedRules {
     }
 
     public void takeInsurance() {
-
+        boolean insuranceTaken;
+        boolean dealerBlackjack;
     }
 
     public void insuranceCheck(Card dealerFaceCard) {
@@ -26,15 +28,17 @@ public class AdvancedRules {
         }
     }
 
-    public boolean isBlackJack(int dealerSoftValue, int playerSoftValue) {
+    public void blackJackCheck(int dealerSoftValue, int playerSoftValue) {
         if(dealerSoftValue == 21 || playerSoftValue == 21) {
-            return true;
+            isBlackjack = true;
         }
-        return false;
+        else {
+            isBlackjack = false;
+        }
     }
 
-    public void splitCheck(ArrayList<Card> playerHand, int playerHitCount) {
-        if(playerHand.get(0).getRank() == playerHand.get(1).getRank() && playerHitCount == 0) {
+    public void splitCheck(ArrayList<Card> playerHand) {
+        if(playerHand.get(0).getRank().equals(playerHand.get(1).getRank())) {
             splitEnabled = true;
         }
     }

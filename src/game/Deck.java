@@ -21,12 +21,8 @@ public class Deck {
     }
 
     public Card draw() {
-        try {
-            return cardDeck[top];
-        }
-        finally {
-            top++;
-        }
+        top++;
+        return cardDeck[top-1];
     }
 
     /**
@@ -58,6 +54,10 @@ public class Deck {
 
     public int getTop() {
         return top;
+    }
+
+    public void setTop(int value) {
+        top = value;
     }
 
     public int getDeckSize() {
