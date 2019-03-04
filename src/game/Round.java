@@ -15,6 +15,12 @@ public class Round extends AdvancedRules {
     ArrayList<ArrayList<Card>> allPlayerHands = new ArrayList<>(2); //Initial capacity of only two hands since multi-splits are very rare
     ArrayList<Card> dealerHand = new ArrayList<>(); //In standard hand, first card is always hidden,
 
+    public enum Winner {
+        PLAYER,
+        DEALER,
+        PUSH;
+    }
+
     public Round(int totalDecks) {
         deck = new Deck(totalDecks);
         deck.shuffle();
@@ -80,14 +86,16 @@ public class Round extends AdvancedRules {
     }
 
     /**
-     * Dealer draws after player
+     * Dealer draws after player reaches 21, busts or stands
      */
     public void dealerDraws() {
         while(dealerHardValue < 16 || dealerSoftValue < 17) { //ALLOW PLAYER TO CHANGE VALUES DEALER STANDS ON!!!!!!!!
-            currentDealerCard = deck.draw();
-            dealerHand.add(currentDealerCard);
-            dealerHardValue += aceValueHard(currentDealerCard);
-            dealerSoftValue += aceValueSoft(currentDealerCard);
+            if(dealerHardValue < 16 || dealerSoftValue < 17) {
+                currentDealerCard = deck.draw();
+                dealerHand.add(currentDealerCard);
+                dealerHardValue += aceValueHard(currentDealerCard);
+                dealerSoftValue += aceValueSoft(currentDealerCard);
+            }
         }
     }
 
@@ -108,30 +116,30 @@ public class Round extends AdvancedRules {
 
     /**
      * Check whether the dealer or player one
-     * Note: Boolean is used so that null represents a tie (push)
-     * @return true if player wins, false if dealer wins, null if push
+     * Note: Uses custom Winner enum instead of boolean since there are three win states
+     * @return Winner.PLAYER if player wins, Winner.DEALER if dealer wins, Winner.PUSH if push
      */
-    public Boolean checkWinner(int finalPlayerValue, int finalDealerValue) {
+    public Winner checkWinner(int finalPlayerValue, int finalDealerValue) {
         if(finalPlayerValue > 21) {
-            return false;
+            return Winner.DEALER;
         }
         else if(finalDealerValue > 21) {
-            return true;
+            return Winner.PLAYER;
         }
         if(finalPlayerValue <= 21 && finalDealerValue <= 21) {
             if(finalPlayerValue > finalDealerValue) {
-                return true;
+                return Winner.PLAYER;
             }
             else if(finalPlayerValue < finalDealerValue){
-                return false;
+                return Winner.DEALER;
             }
         }
-        return null;
+        return Winner.PUSH;
     }
 
-    public void payOut(Boolean isWinner) {
-        if(isWinner) {
-            if(dealerSoftValue == 21) {
+    public void payOut(Winner roundWinner) {
+        if(roundWinner == Winner.PLAYER) {
+            if(playerSoftValue == 21 && allPlayerHands.get(0).size() == 2) {
                 if(standardBlackjackPayout) {
                     //3:2 blackjack payout
                 }
@@ -143,10 +151,10 @@ public class Round extends AdvancedRules {
                 //standard 2:1 payout
             }
         }
-        else if(!isWinner) {
+        else if(roundWinner == Winner.DEALER) {
             //Lose
         }
-        else if(isWinner == null) {
+        else if(roundWinner == Winner.PUSH) {
             //Push. give bet back to player
         }
     }

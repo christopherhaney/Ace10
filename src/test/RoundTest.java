@@ -9,8 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class RoundTest {
     int randomCutIndex = ThreadLocalRandom.current().nextInt(0,52); //Random int used to cut deck for all tests
-    static Deck[] allDecksStandard = new Deck[8]; //Standard 1-8 deck shoes in order of suit, then rank (repeats every 52 cards)
-    static Deck[] allDecksShuffled = new Deck[8]; //Randomly shuffled 1-8 deck shoes used for all tests
+    static Deck[] roundWinDeck;
+    static Deck[] roundLossDeck;
+    static Deck[] roundPushDeck;
+    static Deck[] roundPlayerBlackjackDeck;
+    static Deck[] roundDealerBlackjackDeck;
 
     /**
      * Method to initialize standard and shuffled deck arrays for test methods
@@ -18,13 +21,13 @@ public class RoundTest {
     @BeforeAll
     public static void initializeDecks() {
         for(int i = 0; i < 8; i++) {
-            allDecksStandard[i] = new Deck(i+1);
-            allDecksShuffled[i] = new Deck(i+1);
-            allDecksShuffled[i].shuffle();
+            roundWinDeck[i] = new Deck(i+1);
+            //roundLossDeck;
+            //roundPushDeck;
+            roundPlayerBlackjackDeck[i] = new Deck(i+1);
+            roundDealerBlackjackDeck[i].shuffle();
         }
     }
-
-
 
     /**
      * Test to verify shuffle is completely distinct, MAY NEED TO IMPROVE SHUFFLE ALGO
