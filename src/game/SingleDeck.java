@@ -60,4 +60,13 @@ public class SingleDeck {
     public static Card[] getSingleDeck() {
         return singleDeck;
     }
+
+    public static Card getSingleDeckCard(String rank, String suit) {
+        for(int i = 0; i < singleDeck.length; i++) {
+            if(singleDeck[i].getRank().equals(rank) && singleDeck[i].getSuit().equals(suit)) {
+                return singleDeck[i];
+            }
+        }
+        return singleDeck[0]; //If card wasn't found
+    }
 }

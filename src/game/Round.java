@@ -166,6 +166,7 @@ public class Round extends AdvancedRules {
         playerSoftValue = 0;
         finalPlayerValue = 0;
         finalDealerValue = 0;
+        isBlackjack = false;
         if(deck.getTop() > (deck.getDeckSize() / 4)) { //OVER FOUR FOR NOW, LET PLAYER CHANGE/CHECK STANDARD SHUFFLE RATE LATER
             deck.shuffle();
         }

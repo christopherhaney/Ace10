@@ -1,6 +1,7 @@
 package test;
 import game.Card;
 import game.Deck;
+import game.SingleDeck;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.util.concurrent.ThreadLocalRandom;
@@ -14,12 +15,13 @@ public class RoundTest {
     static Deck[] roundPushDeck;
     static Deck[] roundPlayerBlackjackDeck;
     static Deck[] roundDealerBlackjackDeck;
+    private Deck[] roundDealerSoft21Deck;
 
     /**
      * Method to initialize standard and shuffled deck arrays for test methods
      */
     @BeforeAll
-    public static void initializeDecks() {
+    public void initializeDecks() {
         for(int i = 0; i < 8; i++) {
             roundWinDeck[i] = new Deck(i+1);
             //roundLossDeck;
@@ -27,6 +29,7 @@ public class RoundTest {
             roundPlayerBlackjackDeck[i] = new Deck(i+1);
             roundDealerBlackjackDeck[i].shuffle();
         }
+        //roundDealerSoft21Deck = {SingleDeck.getSingleDeckCard("NINE","SPADES"),SingleDeck.getSingleDeckCard("FOUR","HEARTS")};
     }
 
     /**
