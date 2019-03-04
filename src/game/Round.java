@@ -90,12 +90,10 @@ public class Round extends AdvancedRules {
      */
     public void dealerDraws() {
         while(dealerHardValue < 16 || dealerSoftValue < 17) { //ALLOW PLAYER TO CHANGE VALUES DEALER STANDS ON!!!!!!!!
-            if(dealerHardValue < 16 || dealerSoftValue < 17) {
-                currentDealerCard = deck.draw();
-                dealerHand.add(currentDealerCard);
-                dealerHardValue += aceValueHard(currentDealerCard);
-                dealerSoftValue += aceValueSoft(currentDealerCard);
-            }
+            currentDealerCard = deck.draw();
+            dealerHand.add(currentDealerCard);
+            dealerHardValue += aceValueHard(currentDealerCard);
+            dealerSoftValue += aceValueSoft(currentDealerCard);
         }
     }
 
@@ -160,13 +158,8 @@ public class Round extends AdvancedRules {
     }
 
     public void resetRound() {
-        dealerHardValue = 0;
-        dealerSoftValue = 0;
-        playerHardValue = 0;
-        playerSoftValue = 0;
-        finalPlayerValue = 0;
-        finalDealerValue = 0;
-        isBlackjack = false;
+        dealerHardValue = dealerSoftValue = playerHardValue = playerSoftValue = finalPlayerValue = finalDealerValue = 0;
+        isPlayerBlackjack = isDealerBlackjack = false;
         if(deck.getTop() > (deck.getDeckSize() / 4)) { //OVER FOUR FOR NOW, LET PLAYER CHANGE/CHECK STANDARD SHUFFLE RATE LATER
             deck.shuffle();
         }
@@ -210,9 +203,5 @@ public class Round extends AdvancedRules {
 
     public ArrayList<Card> getDealerHand() {
         return dealerHand;
-    }
-
-    public Deck getDeck() {
-        return deck;
     }
 }

@@ -8,7 +8,8 @@ public class AdvancedRules {
     public boolean surrenderEnabled; //Gives the player the option to surrender after the initial draw
     public boolean splitEnabled; //Gives the player the option to split if initial hand is two cards of the same rank
     public boolean standardBlackjackPayout; //3:2 if true, 6:5 if false
-    public boolean isBlackjack;
+    public boolean isPlayerBlackjack;
+    public boolean isDealerBlackjack;
 
     public void doubleDown(int currentBet, int playerHitCount) {
         if(playerHitCount == 0) {
@@ -29,11 +30,11 @@ public class AdvancedRules {
     }
 
     public void blackJackCheck(int dealerSoftValue, int playerSoftValue) {
-        if(dealerSoftValue == 21 || playerSoftValue == 21) {
-            isBlackjack = true;
+        if(playerSoftValue == 21) {
+            isPlayerBlackjack = true;
         }
-        else {
-            isBlackjack = false;
+        if(dealerSoftValue == 21){
+            isDealerBlackjack = true;
         }
     }
 
