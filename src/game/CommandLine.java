@@ -43,7 +43,7 @@ public class CommandLine extends CommandLineSplit  {
             playerDoubleDownPrint();
         }
         else if(currentToken.equals("sp")) {
-            round.splitHand();
+            round.splitHand(0); //FIGURE OUT HOW TO ADJUST INDEX FOR MULTISPLITS
             printInitialSplit(round);
         }
         else if(currentToken.equals("y")) {

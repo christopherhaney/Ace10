@@ -45,15 +45,24 @@ public class Round extends AdvancedRules {
         blackjackCheck(dealerSoftValue,playerSoftValue);
     }
 
-    public void splitHand() {
-        if(splitEnabled) {
-            allPlayerHands.add(new ArrayList<>());
-            allPlayerHands.get(1).add(allPlayerHands.get(0).remove(1));
-            for(int i = allPlayerHands.size() - 2; i < allPlayerHands.size(); i++) {
-                allPlayerHands.get(i).add(deck.draw());
+    /**
+     *
+     * NOTE: THIS CURRENTLY DOESN'T ACCOUNT FOR CASES WHERE THE SAME HAND CAN BE SPLIT MULTIPLE TIMES
+     * @param handToSplitIndex
+     */
+    public void splitHand(int handToSplitIndex) {
+            allPlayerHands.add(new ArrayList<>()); //Create a new ArrayList (hand) for all player hands to ensure allPlayerHands can store the split
+            ArrayList<Card> tempSplitHand = new ArrayList<>(); //Then create a temp list to store the split hand
+            tempSplitHand.add(allPlayerHands.get(handToSplitIndex).remove(1)); //Move the last card from the hand-to-split into the temp hand
+            allPlayerHands.get(handToSplitIndex).add(deck.draw()); //Draw a card for the original hand
+            tempSplitHand.add(deck.draw()); //Then draw a card for the split hand
+            if(!allPlayerHands.get(handToSplitIndex+1).isEmpty()) { //If the hand at the next index isn't empty, to keep the hands in order...
+                //Move hand at handToSplitIndex+1 to handToSplitIndex+2
+                ArrayList<Card> handToSwap = allPlayerHands.get(handToSplitIndex+1);
+                allPlayerHands.get(handToSplitIndex+2).clear();
+                allPlayerHands.get(handToSplitIndex+2).addAll(handToSwap);
             }
-            splitCheck(allPlayerHands.get(allPlayerHands.size() - 1));
-        }
+            allPlayerHands.get(handToSplitIndex+1).addAll(tempSplitHand); //Add the temp list to the now vacant handToSplitIndex+1 to complete the split
     }
 
     /**
@@ -130,10 +139,11 @@ public class Round extends AdvancedRules {
      * @return Winner.PLAYER if player wins, Winner.DEALER if dealer wins, Winner.PUSH if push
      */
     public Winner checkWinner(int finalPlayerValue, int finalDealerValue) {
-        //If player busts dealer always wins, otherwise if the dealer busts and the player doesn't the player always wins
+        //If player busts dealer always wins
         if(finalPlayerValue > 21) {
             return Winner.DEALER;
         }
+        //Otherwise if the dealer busts and the player doesn't the player always wins
         else if(finalDealerValue > 21) {
             return Winner.PLAYER;
         }
@@ -152,7 +162,7 @@ public class Round extends AdvancedRules {
      */
     public boolean resetRound() {
         dealerHardValue = dealerSoftValue = playerHardValue = playerSoftValue = finalPlayerValue = finalDealerValue = 0;
-        isPlayerBlackjack = isDealerBlackjack = isOriginalBlackjack = splitEnabled = insuranceEnabled = false;
+        isPlayerBlackjack = isDealerBlackjack = false;
         allPlayerHands.get(0).clear();
         allPlayerHands.get(1).clear();
         dealerHand.clear();

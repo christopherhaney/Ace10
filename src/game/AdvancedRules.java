@@ -11,6 +11,7 @@ public class AdvancedRules {
     public boolean splitEnabled; //Gives the player the option to split if initial hand is two cards of the same rank
     public boolean isPlayerBlackjack;
     public boolean isDealerBlackjack;
+    public boolean originalBlackjackEnabled;
     public boolean isOriginalBlackjack;
 
     public boolean splitCheck(ArrayList<Card> playerHand) {
@@ -22,7 +23,7 @@ public class AdvancedRules {
 
     public boolean insuranceCheck(Card dealerFaceCard) {
         if(dealerFaceCard.getRank().equals("ACE")) {
-            return true; 
+            return true;
         }
         return false;
     }
@@ -34,9 +35,17 @@ public class AdvancedRules {
         if(dealerSoftValue == 21){
             isDealerBlackjack = true;
         }
+    }
+
+    public boolean isOriginalBlackjack(ArrayList<Card> playerHand) {
         if(playerHand.contains(SingleDeck.getSingleDeckCard("ACE","SPADES")) && playerHand.contains(SingleDeck.getSingleDeckCard("JACK","SPADES")) || playerHand.contains(SingleDeck.getSingleDeckCard("JACK","CLUBS"))) {
-            isOriginalBlackjack = true;
+            return true;
         }
+        return false;
+    }
+
+    public void setOriginalBlackjackEnabled(boolean setBoolean) {
+        originalBlackjackEnabled = setBoolean;
     }
 
     //Bizarre rules for fun

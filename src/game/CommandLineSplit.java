@@ -23,10 +23,22 @@ public class CommandLineSplit {
                 TimeUnit.SECONDS.sleep(1);
                 System.out.print("\n");
             }
-
+            System.out.print("\n");
+            multiSplitCheck();
         }
         catch(InterruptedException e) {
             System.err.println("Sleep delay error.");
+        }
+    }
+
+    public void multiSplitCheck() {
+        while(true) {
+            for(int i = 0; i < round.getAllPlayerHands().size(); i++) {
+                if(round.splitCheck(round.getPlayerHand(i))) {
+                    System.out.print("You can split again! Type 'y' if you wish to split hand " + (i+1) + ", otherwise type 'n': ");
+                }
+            }
+            break;
         }
     }
 }
