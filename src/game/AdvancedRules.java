@@ -1,5 +1,7 @@
 package game;
 
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
+
 import java.util.ArrayList;
 
 public class AdvancedRules {
@@ -7,47 +9,33 @@ public class AdvancedRules {
     public boolean insuranceEnabled; //Gives the player the option to place a 2:1 insurance bet if the dealer's face card is ACE
     public boolean surrenderEnabled; //Gives the player the option to surrender after the initial draw
     public boolean splitEnabled; //Gives the player the option to split if initial hand is two cards of the same rank
-    public boolean standardBlackjackPayout; //3:2 if true, 6:5 if false
     public boolean isPlayerBlackjack;
     public boolean isDealerBlackjack;
+    public boolean isOriginalBlackjack;
 
-    public void doubleDown(int currentBet, int playerHitCount) {
-        if(playerHitCount == 0) {
-            currentBet = currentBet * 2;
-            //subtract currentBet again from totalMoney
+    public boolean splitCheck(ArrayList<Card> playerHand) {
+        if(playerHand.get(0).getValue() == playerHand.get(1).getValue()) {
+            return true;
         }
+        return false;
     }
 
-    public void takeInsurance() {
-        boolean insuranceTaken;
-        boolean dealerBlackjack;
-    }
-
-    public void insuranceCheck(Card dealerFaceCard) {
+    public boolean insuranceCheck(Card dealerFaceCard) {
         if(dealerFaceCard.getRank().equals("ACE")) {
-            insuranceEnabled = true; //Once insuranceEnabled is true, immediately show user popup asking if they want to take it
+            return true; 
         }
+        return false;
     }
 
-    public void blackJackCheck(int dealerSoftValue, int playerSoftValue) {
+    public void blackjackCheck(int dealerSoftValue, int playerSoftValue) {
         if(playerSoftValue == 21) {
             isPlayerBlackjack = true;
         }
         if(dealerSoftValue == 21){
             isDealerBlackjack = true;
         }
-    }
-
-    public void splitCheck(ArrayList<Card> playerHand) {
-        if(playerHand.get(0).getRank().equals(playerHand.get(1).getRank())) {
-            splitEnabled = true;
-        }
-    }
-
-    public void splitHand(ArrayList<ArrayList<Card>> allPlayerHands, Deck deck) {
-        allPlayerHands.get(1).add(allPlayerHands.get(0).remove(1));
-        for(int i = 0; i < 2; i++) {
-            allPlayerHands.get(i).add(deck.draw());
+        if(playerHand.contains(SingleDeck.getSingleDeckCard("ACE","SPADES")) && playerHand.contains(SingleDeck.getSingleDeckCard("JACK","SPADES")) || playerHand.contains(SingleDeck.getSingleDeckCard("JACK","CLUBS"))) {
+            isOriginalBlackjack = true;
         }
     }
 

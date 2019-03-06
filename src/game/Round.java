@@ -12,20 +12,19 @@ public class Round extends AdvancedRules {
     private Deck deck;
     private Card currentPlayerCard; //The current card that will be dealt to the player
     private Card currentDealerCard; //The current card that will be dealt to the dealer
-    ArrayList<ArrayList<Card>> allPlayerHands = new ArrayList<>(2); //Initial capacity of only two hands since multi-splits are very rare
+    ArrayList<ArrayList<Card>> allPlayerHands = new ArrayList<>(1); //Initial capacity
     ArrayList<Card> dealerHand = new ArrayList<>(); //In standard hand, first card is always hidden,
 
     public enum Winner {
         PLAYER,
         DEALER,
-        PUSH;
+        PUSH
     }
 
     public Round(int totalDecks) {
         deck = new Deck(totalDecks);
         deck.shuffle();
         allPlayerHands.add(0,new ArrayList<>());
-        allPlayerHands.add(1,new ArrayList<>());
         dealerHardValue = 0;
         playerHardValue = 0;
         playerHitCount = 0;
@@ -43,8 +42,18 @@ public class Round extends AdvancedRules {
             dealerSoftValue += aceValueSoft(currentDealerCard);
         }
         insuranceCheck(dealerHand.get(1));
-        blackJackCheck(dealerSoftValue,playerSoftValue);
-        splitCheck(allPlayerHands.get(0));
+        blackjackCheck(dealerSoftValue,playerSoftValue);
+    }
+
+    public void splitHand() {
+        if(splitEnabled) {
+            allPlayerHands.add(new ArrayList<>());
+            allPlayerHands.get(1).add(allPlayerHands.get(0).remove(1));
+            for(int i = allPlayerHands.size() - 2; i < allPlayerHands.size(); i++) {
+                allPlayerHands.get(i).add(deck.draw());
+            }
+            splitCheck(allPlayerHands.get(allPlayerHands.size() - 1));
+        }
     }
 
     /**
@@ -62,7 +71,7 @@ public class Round extends AdvancedRules {
      */
     public int aceValueSoft(Card currentPlayerCard) {
         if(currentPlayerCard.getRank().equals("ACE")) {
-            if(currentPlayerCard.getValue() + playerSoftValue > 21) {
+            if((currentPlayerCard.getValue() + playerSoftValue) > 21) {
                 return 1; //In the event the hand has more than one ace, subsequent aces will need to be worth 1
             }
             return 11;
@@ -89,7 +98,10 @@ public class Round extends AdvancedRules {
      * Dealer draws after player reaches 21, busts or stands
      */
     public void dealerDraws() {
-        while(dealerHardValue < 16 || dealerSoftValue < 17) { //ALLOW PLAYER TO CHANGE VALUES DEALER STANDS ON!!!!!!!!
+        while(true) { //ALLOW PLAYER TO CHANGE VALUES DEALER STANDS ON!!!!!!!!
+            if(dealerHardValue > 16 || dealerSoftValue > 17) {
+                break;
+            }
             currentDealerCard = deck.draw();
             dealerHand.add(currentDealerCard);
             dealerHardValue += aceValueHard(currentDealerCard);
@@ -118,55 +130,38 @@ public class Round extends AdvancedRules {
      * @return Winner.PLAYER if player wins, Winner.DEALER if dealer wins, Winner.PUSH if push
      */
     public Winner checkWinner(int finalPlayerValue, int finalDealerValue) {
+        //If player busts dealer always wins, otherwise if the dealer busts and the player doesn't the player always wins
         if(finalPlayerValue > 21) {
             return Winner.DEALER;
         }
         else if(finalDealerValue > 21) {
             return Winner.PLAYER;
         }
-        if(finalPlayerValue <= 21 && finalDealerValue <= 21) {
-            if(finalPlayerValue > finalDealerValue) {
-                return Winner.PLAYER;
-            }
-            else if(finalPlayerValue < finalDealerValue){
-                return Winner.DEALER;
-            }
+        if(finalPlayerValue > finalDealerValue) {
+            return Winner.PLAYER;
         }
-        return Winner.PUSH;
+        if(finalPlayerValue < finalDealerValue){
+            return Winner.DEALER;
+        }
+        return Winner.PUSH; //If finalPlayerValue and finalDealerValue are equal push will be returned
     }
 
-    public void payOut(Winner roundWinner) {
-        if(roundWinner == Winner.PLAYER) {
-            if(playerSoftValue == 21 && allPlayerHands.get(0).size() == 2) {
-                if(standardBlackjackPayout) {
-                    //3:2 blackjack payout
-                }
-                else {
-                    //6:5 blackjack payout
-                }
-            }
-            else {
-                //standard 2:1 payout
-            }
-        }
-        else if(roundWinner == Winner.DEALER) {
-            //Lose
-        }
-        else if(roundWinner == Winner.PUSH) {
-            //Push. give bet back to player
-        }
-    }
-
-    public void resetRound() {
+    /**
+     * Reset variables and hands before beginning another round
+     * @return true if shuffling deck to engage print statement/animation, false otherwise
+     */
+    public boolean resetRound() {
         dealerHardValue = dealerSoftValue = playerHardValue = playerSoftValue = finalPlayerValue = finalDealerValue = 0;
-        isPlayerBlackjack = isDealerBlackjack = false;
-        if(deck.getTop() > (deck.getDeckSize() / 4)) { //OVER FOUR FOR NOW, LET PLAYER CHANGE/CHECK STANDARD SHUFFLE RATE LATER
-            deck.shuffle();
-        }
+        isPlayerBlackjack = isDealerBlackjack = isOriginalBlackjack = splitEnabled = insuranceEnabled = false;
         allPlayerHands.get(0).clear();
         allPlayerHands.get(1).clear();
         dealerHand.clear();
         playerHitCount = 0;
+        if(deck.getTop() > (deck.getDeckSize() / 4)) { //OVER FOUR FOR NOW, LET PLAYER CHANGE/CHECK STANDARD SHUFFLE RATE LATER
+            deck.shuffle();
+            return true;
+        }
+        return false;
     }
 
     public int getPlayerHardValue() {
@@ -197,8 +192,12 @@ public class Round extends AdvancedRules {
         return finalDealerValue;
     }
 
-    public ArrayList<Card> getPlayerHand() {
-        return allPlayerHands.get(0);
+    public ArrayList<Card> getPlayerHand(int i) {
+        return allPlayerHands.get(i);
+    }
+
+    public ArrayList<ArrayList<Card>> getAllPlayerHands() {
+        return allPlayerHands;
     }
 
     public ArrayList<Card> getDealerHand() {
