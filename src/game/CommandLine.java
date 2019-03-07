@@ -3,11 +3,11 @@ package game;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
-public class CommandLine extends CommandLineSplit  {
+public class CommandLine extends CommandLineSplit {
     Scanner keyboardScanner;
     Round round;
     private int totalMoney; //Starts as the money the player enters the game with, if it reaches 0 end game, if player quits add values to database
-    private int currentBet;
+    public int currentBet;
     private int totalDecks;
 
     public CommandLine() {
@@ -44,7 +44,7 @@ public class CommandLine extends CommandLineSplit  {
         }
         else if(currentToken.equals("sp")) {
             round.splitHand(0); //FIGURE OUT HOW TO ADJUST INDEX FOR MULTISPLITS
-            printInitialSplit(round);
+            printInitialSplit(round,keyboardScanner);
         }
         else if(currentToken.equals("y")) {
             if(round.resetRound()) {

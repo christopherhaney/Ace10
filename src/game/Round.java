@@ -1,5 +1,6 @@
 package game;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class Round extends AdvancedRules {
     private int dealerHardValue;
@@ -12,7 +13,7 @@ public class Round extends AdvancedRules {
     private Deck deck;
     private Card currentPlayerCard; //The current card that will be dealt to the player
     private Card currentDealerCard; //The current card that will be dealt to the dealer
-    ArrayList<ArrayList<Card>> allPlayerHands = new ArrayList<>(1); //Initial capacity
+    LinkedList<ArrayList<Card>> allPlayerHands = new LinkedList<>();
     ArrayList<Card> dealerHand = new ArrayList<>(); //In standard hand, first card is always hidden,
 
     public enum Winner {
@@ -23,7 +24,7 @@ public class Round extends AdvancedRules {
 
     public Round(int totalDecks) {
         deck = new Deck(totalDecks);
-        deck.shuffle();
+        //deck.shuffle();
         allPlayerHands.add(0,new ArrayList<>());
         dealerHardValue = 0;
         playerHardValue = 0;
@@ -47,22 +48,13 @@ public class Round extends AdvancedRules {
 
     /**
      *
-     * NOTE: THIS CURRENTLY DOESN'T ACCOUNT FOR CASES WHERE THE SAME HAND CAN BE SPLIT MULTIPLE TIMES
      * @param handToSplitIndex
      */
     public void splitHand(int handToSplitIndex) {
-            allPlayerHands.add(new ArrayList<>()); //Create a new ArrayList (hand) for all player hands to ensure allPlayerHands can store the split
-            ArrayList<Card> tempSplitHand = new ArrayList<>(); //Then create a temp list to store the split hand
-            tempSplitHand.add(allPlayerHands.get(handToSplitIndex).remove(1)); //Move the last card from the hand-to-split into the temp hand
+            allPlayerHands.add(handToSplitIndex + 1,new ArrayList<>()); //Create a new ArrayList (hand) for allPlayerHands to ensure it can store the split
+            allPlayerHands.get(handToSplitIndex + 1).add(allPlayerHands.get(handToSplitIndex).remove(1)); //Move the last card from the hand-to-split into the next hand
             allPlayerHands.get(handToSplitIndex).add(deck.draw()); //Draw a card for the original hand
-            tempSplitHand.add(deck.draw()); //Then draw a card for the split hand
-            if(!allPlayerHands.get(handToSplitIndex+1).isEmpty()) { //If the hand at the next index isn't empty, to keep the hands in order...
-                //Move hand at handToSplitIndex+1 to handToSplitIndex+2
-                ArrayList<Card> handToSwap = allPlayerHands.get(handToSplitIndex+1);
-                allPlayerHands.get(handToSplitIndex+2).clear();
-                allPlayerHands.get(handToSplitIndex+2).addAll(handToSwap);
-            }
-            allPlayerHands.get(handToSplitIndex+1).addAll(tempSplitHand); //Add the temp list to the now vacant handToSplitIndex+1 to complete the split
+            allPlayerHands.get(handToSplitIndex + 1).add(deck.draw()); //Then draw a card for the split hand
     }
 
     /**
@@ -206,7 +198,7 @@ public class Round extends AdvancedRules {
         return allPlayerHands.get(i);
     }
 
-    public ArrayList<ArrayList<Card>> getAllPlayerHands() {
+    public LinkedList<ArrayList<Card>> getAllPlayerHands() {
         return allPlayerHands;
     }
 
