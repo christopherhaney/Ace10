@@ -1,7 +1,5 @@
 package game;
 
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
-
 import java.util.ArrayList;
 
 public class AdvancedRules {

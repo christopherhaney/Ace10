@@ -1,8 +1,6 @@
 package game;
 
 public class SingleDeck {
-
-    /*
     private static final Card[] singleDeck = {
             new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
             new Card(3, "THREE", "CLUBS","\uD83C\uDCD3"),
@@ -56,65 +54,6 @@ public class SingleDeck {
             new Card(10, "QUEEN", "SPADES","\uD83C\uDCAD"),
             new Card(10, "KING", "SPADES","\uD83C\uDCAE"),
             new Card(11, "ACE", "SPADES","\uD83C\uDCA1")
-    };
-    */
-
-    /**
-     * Deck of 52 TWO of CLUBS cards to test splitting
-     */
-    private static final Card[] singleDeck = {
-            new Card(10, "TEN", "SPADES","\uD83C\uDCAA"),
-            new Card(10, "JACK", "SPADES","\uD83C\uDCAB"),
-            new Card(10, "QUEEN", "SPADES","\uD83C\uDCAD"),
-            new Card(10, "KING", "SPADES","\uD83C\uDCAE"),
-            new Card(10, "TEN", "DIAMONDS",	"\uD83C\uDCCA"),
-            new Card(10, "JACK", "DIAMONDS",	"\uD83C\uDCCB"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
-            new Card(2, "TWO", "CLUBS","\uD83C\uDCD2"),
     };
 
     public static Card[] getSingleDeck() {

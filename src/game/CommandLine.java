@@ -1,12 +1,14 @@
 package game;
 
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class CommandLine extends CommandLineSplit {
     Scanner keyboardScanner;
     Round round;
-    private int totalMoney; //Starts as the money the player enters the game with, if it reaches 0 end game, if player quits add values to database
+    private double totalMoney; //Starts as the money the player enters the game with, if it reaches 0 end game, if player quits add values to database
     public int currentBet;
     private int totalDecks;
 
@@ -45,9 +47,18 @@ public class CommandLine extends CommandLineSplit {
         else if(currentToken.equals("sp")) {
             round.splitHand(0); //FIGURE OUT HOW TO ADJUST INDEX FOR MULTISPLITS
             printInitialSplit(round,keyboardScanner);
+            if(round.splitCheck(round.getPlayerHand(0))) {
+                printSplitPrompt(0);
+            }
+            else if(round.splitCheck(round.getPlayerHand(1)) && !round.splitCheck(round.getPlayerHand(0))) {
+                printSplitPrompt(1);
+            }
+            System.out.print("\nHow would you like to start? Type 'h' to hit, 's' to stand or 'd' to double down: ");
         }
         else if(currentToken.equals("y")) {
-            if(round.resetRound()) {
+            keyboardScanner.reset();
+            round.resetRound();
+            if(round.canShuffle()) {
                 System.out.println("Shuffling deck...");
             }
             round.roundBegin();
@@ -60,15 +71,24 @@ public class CommandLine extends CommandLineSplit {
     }
 
     public void beginRound() {
-        System.out.print("Place your bet! (Must be between '$1' and your current total): $");
-        currentBet = keyboardScanner.nextInt();
-        while(currentBet < 1 || currentBet > totalMoney) {
-            System.out.print("Bet must be between '$1' and your current total): $");
-            currentBet = keyboardScanner.nextInt();
+        System.out.print("Place your bet! (Must be between '1' and your current total): $");
+        while(keyboardScanner.hasNext()) {
+            if(keyboardScanner.hasNextInt()) {
+                currentBet = keyboardScanner.nextInt();
+                if(currentBet < 1 || currentBet > totalMoney) {
+                    System.out.print("Bet must be between '$1' and your current total): $");
+                }
+                else {
+                    break;
+                }
+            }
+            else {
+                keyboardScanner.nextLine();
+            }
         }
         totalMoney -= currentBet;
         System.out.println("Beginning round...\n");
-        printPlayerCards();
+        printPlayerCards(round.getCurrentHandIndex());
         printSoftValue();
         printInitialDealerCards();
         specialBeginRoundChecks();
@@ -79,10 +99,10 @@ public class CommandLine extends CommandLineSplit {
             round.playerStand();
             finishRound();
         }
-        if(round.isDealerBlackjack) {
+        else if(round.isDealerBlackjack) {
             finishRound();
         }
-        if(round.splitCheck(round.getPlayerHand(0))) {
+        else if(round.splitCheck(round.getPlayerHand(0))) {
             System.out.print("\nYou can split your hand! Type 'h' to hit, 's' to stand, 'd' to double down or 'sp' to split your hand: ");
         }
         else {
@@ -91,20 +111,21 @@ public class CommandLine extends CommandLineSplit {
     }
 
     public void playerHitPrint() {
-        round.playerHit();
+        round.playerHit(round.getCurrentHandIndex());
         System.out.println("Hit!\n");
-        printPlayerCards();
+        printPlayerCards(round.getCurrentHandIndex());
         printSoftValue();
-        if(round.getPlayerHardValue() > 21) {
+        if(round.getPlayerHardValue(round.getCurrentHandIndex()) > 21) {
+            System.out.println("Bust!");
             round.dealerDraws();
             finishRound();
         }
-        else if(round.getPlayerHardValue() == 21 || round.getPlayerSoftValue() == 21) {
+        else if(round.getPlayerHardValue(round.getCurrentHandIndex()) == 21 || round.getPlayerSoftValue(round.getCurrentHandIndex()) == 21) {
             round.dealerDraws();
             finishRound();
         }
         else {
-            printInitialDealerCards();
+            quickPrintInitialDealerCards();
             System.out.print("\nWould you like to hit or stand? Type 'h' for hit or 's' for stand: ");
         }
     }
@@ -113,14 +134,19 @@ public class CommandLine extends CommandLineSplit {
      *
      */
     public void playerDoubleDownPrint() {
-        System.out.println("Double down!!\n");
-        totalMoney -= currentBet;
-        currentBet += currentBet;
-        round.playerHit();
-        printPlayerCards();
-        printSoftValue();
-        round.dealerDraws();
-        finishRound();
+        if((currentBet * 2) > totalMoney) {
+            System.out.print("Double down exceeds bankroll. Choose another option: ");
+        }
+        else {
+            System.out.println("Double down!!\n");
+            totalMoney -= currentBet;
+            currentBet += currentBet;
+            round.playerHit(round.getCurrentHandIndex());
+            printPlayerCards(round.getCurrentHandIndex());
+            printSoftValue();
+            round.dealerDraws();
+            finishRound();
+        }
     }
 
     /**
@@ -129,30 +155,37 @@ public class CommandLine extends CommandLineSplit {
     public void playerStandPrint() {
         System.out.println("Stand!");
         round.playerStand();
-        finishRound();
+        if(round.getCurrentHandIndex() == round.getAllPlayerHands().size()) {
+            finishRound();
+        }
+        else {
+
+        }
     }
 
     /**
      * Print the player's soft value if <= 21 or != to the hard value
      */
     public void printSoftValue() {
-        if(round.getPlayerSoftValue() == round.getPlayerHardValue() && round.getPlayerHardValue() < 21 || round.getPlayerSoftValue() > 21) {
-            System.out.println("\nPlayer Hard Value: " + round.getPlayerHardValue());
+        if(round.getPlayerSoftValue(0) == round.getPlayerHardValue(0)
+                && round.getPlayerHardValue(0) < 21 || round.getPlayerSoftValue(0) > 21) {
+            System.out.println("\nPlayer Hard Value: " + round.getPlayerHardValue(0));
         }
-        else if(round.getPlayerSoftValue() == 21 || round.getPlayerHardValue() == 21) {
+        else if(round.getPlayerSoftValue(0) == 21 || round.getPlayerHardValue(0) == 21) {
             System.out.println("\n21!");
         }
-        else if(round.getPlayerHardValue() > 21) {
+        else if(round.getPlayerHardValue(0) > 21) {
             System.out.println("\nBust!");
         }
+
         else {
-            System.out.println("\nPlayer Soft Value: " + round.getPlayerSoftValue());
-            System.out.println("Player Hard Value: " + round.getPlayerHardValue());
+            System.out.println("\nPlayer Soft Value: " + round.getPlayerSoftValue(0));
+            System.out.println("Player Hard Value: " + round.getPlayerHardValue(0));
         }
 
     }
 
-    public void printPlayerCards() {
+    public void printPlayerCards(int currentHandIndex) {
         int i = 0;
         try {
             System.out.print("Player's Cards:");
@@ -171,7 +204,6 @@ public class CommandLine extends CommandLineSplit {
 
     public void printInitialDealerCards() {
         try {
-            int i = 1;
             System.out.print("Dealer's Cards:");
             TimeUnit.SECONDS.sleep(1);
             System.out.print(round.getDealerHand().get(0).getUnicodeString());
@@ -184,6 +216,13 @@ public class CommandLine extends CommandLineSplit {
         catch(InterruptedException e) {
             System.err.println("Sleep delay error.");
         }
+    }
+
+    public void quickPrintInitialDealerCards() {
+            System.out.print("Dealer's Cards:");
+            System.out.print(round.getDealerHand().get(0).getUnicodeString());
+            System.out.print("\uD83C\uDCA0");
+            System.out.println("\nDealer's revealed total: " + round.getDealerHand().get(0).getValue());
     }
 
     /**
@@ -209,7 +248,7 @@ public class CommandLine extends CommandLineSplit {
             else {
                 TimeUnit.SECONDS.sleep(1);
                 System.out.println("\nFinal dealer value is: " + round.getFinalDealerValue());
-                System.out.println("Final player value is: " + round.getFinalPlayerValue() + "\n");
+                System.out.println("Final player value is: " + round.getFinalPlayerValue(0) + "\n");
                 TimeUnit.SECONDS.sleep(1);
             }
         }
@@ -222,34 +261,48 @@ public class CommandLine extends CommandLineSplit {
      *
      */
     public void finishRound() {
-        round.calculateFinalValues();
-        Round.Winner finalWinner = round.checkWinner(round.getFinalPlayerValue(),round.getFinalDealerValue());
+        round.calculateFinalPlayerValue(round.getCurrentHandIndex());
+        round.calculateFinalDealerValue();
+        Round.Winner finalWinner = round.checkWinner(round.getFinalPlayerValue(0),round.getFinalDealerValue());
         printAllDealerCards();
         if(finalWinner == Round.Winner.PLAYER) {
             if(round.isPlayerBlackjack) {
-                totalMoney += (currentBet * 2.5); //ALLOW PLAYER TO SET CUSTOM PAYOUT, 2.5 = 3:2, 2.2 = 6:5, FIND A WAY TO MULTIPLY RATIOS EASIER
-                System.out.println("Blackjack!!! Total money is now: $" + totalMoney + "\n");
+                totalMoney += ((double)currentBet * 2.5); //ALLOW PLAYER TO SET CUSTOM PAYOUT, 2.5 = 3:2, 2.2 = 6:5, FIND A WAY TO MULTIPLY RATIOS EASIER
+                System.out.print("Blackjack!!! Total money is now: $" + totalMoney + "\n");
             }
             else {
                 totalMoney += (currentBet * 2);
-                System.out.println("You win!\nTotal money is now: $" + totalMoney + "\n");
+                System.out.print("You win!\n");
             }
         }
         else if(finalWinner == Round.Winner.DEALER) {
             if(round.isDealerBlackjack) {
-                System.out.println("Dealer blackjack!!! Bet lost.\nTotal money is now: $" + totalMoney + "\n");
+                System.out.print("Dealer blackjack!!! Bet lost.\n");
             }
             else {
-                System.out.println("Dealer wins! Bet lost.\nTotal money is now: $" + totalMoney + "\n");
+                System.out.print("Dealer wins! Bet lost.\n");
             }
         }
         else if(finalWinner == Round.Winner.PUSH) {
             totalMoney += currentBet;
             if(round.isDealerBlackjack && round.isPlayerBlackjack) {
-                System.out.println("Double blackjack!!! Tough luck. Bet returned.\nTotal money is now: $" + totalMoney + "\n");
+                System.out.print("Double blackjack!!! Tough luck. Bet returned.\n");
             }
-            System.out.println("Push! Bet returned.\nTotal money is now: $" + totalMoney + "\n");
+            System.out.print("Push! Bet returned.\n");
         }
-        System.out.print("Play again? 'y' for yes or 'n' for no: ");
+        System.out.println("Total money is now: " + NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(totalMoney));
+        if(totalMoney == 0) {
+            try {
+                System.out.println("\nNo money remaining. Game over. Thanks for playing!");
+                TimeUnit.SECONDS.sleep(1);
+                System.exit(0);
+            }
+            catch(InterruptedException e) {
+                System.err.println("Sleep delay error.");
+            }
+        }
+        else {
+            System.out.print("\nPlay again? 'y' for yes or 'n' for no: ");
+        }
     }
 }

@@ -1,15 +1,17 @@
 package game;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Round extends AdvancedRules {
     private int dealerHardValue;
     private int dealerSoftValue;
-    private int playerHardValue;
-    private int playerSoftValue;
-    private int finalPlayerValue;
     private int finalDealerValue;
-    private int playerHitCount; //Used to determine if split or double down is allowed
+    private int[] playerHardValue = new int[10];
+    private int[] playerSoftValue = new int[10];
+    private int[] finalPlayerValue = new int[10];
+    private int[] playerHitCount = new int[10]; //Used to determine if split or double down is allowed
+    private int currentHandIndex;
     private Deck deck;
     private Card currentPlayerCard; //The current card that will be dealt to the player
     private Card currentDealerCard; //The current card that will be dealt to the dealer
@@ -24,37 +26,23 @@ public class Round extends AdvancedRules {
 
     public Round(int totalDecks) {
         deck = new Deck(totalDecks);
-        //deck.shuffle();
+        deck.shuffle();
         allPlayerHands.add(0,new ArrayList<>());
-        dealerHardValue = 0;
-        playerHardValue = 0;
-        playerHitCount = 0;
     }
 
     public void roundBegin() {
         for(int i = 0; i < 2; i++) {
             currentPlayerCard = deck.draw();
             allPlayerHands.get(0).add(currentPlayerCard);
-            playerHardValue += aceValueHard(currentPlayerCard);
-            playerSoftValue += aceValueSoft(currentPlayerCard);
+            playerHardValue[0] += aceValueHard(currentPlayerCard);
+            playerSoftValue[0] += aceValueSoft(currentPlayerCard,playerSoftValue[0]);
             currentDealerCard = deck.draw();
             dealerHand.add(currentDealerCard);
             dealerHardValue += aceValueHard(currentDealerCard);
-            dealerSoftValue += aceValueSoft(currentDealerCard);
+            dealerSoftValue += aceValueSoft(currentDealerCard,dealerSoftValue);
         }
         insuranceCheck(dealerHand.get(1));
-        blackjackCheck(dealerSoftValue,playerSoftValue);
-    }
-
-    /**
-     *
-     * @param handToSplitIndex
-     */
-    public void splitHand(int handToSplitIndex) {
-            allPlayerHands.add(handToSplitIndex + 1,new ArrayList<>()); //Create a new ArrayList (hand) for allPlayerHands to ensure it can store the split
-            allPlayerHands.get(handToSplitIndex + 1).add(allPlayerHands.get(handToSplitIndex).remove(1)); //Move the last card from the hand-to-split into the next hand
-            allPlayerHands.get(handToSplitIndex).add(deck.draw()); //Draw a card for the original hand
-            allPlayerHands.get(handToSplitIndex + 1).add(deck.draw()); //Then draw a card for the split hand
+        blackjackCheck(dealerSoftValue,playerSoftValue[0]);
     }
 
     /**
@@ -70,9 +58,9 @@ public class Round extends AdvancedRules {
     /**
      * When an ace is hit, determine whether it should be worth 11 or 1 for the soft counter
      */
-    public int aceValueSoft(Card currentPlayerCard) {
+    public int aceValueSoft(Card currentPlayerCard, int currentHandSoftValue) {
         if(currentPlayerCard.getRank().equals("ACE")) {
-            if((currentPlayerCard.getValue() + playerSoftValue) > 21) {
+            if((currentPlayerCard.getValue() + currentHandSoftValue) > 21) {
                 return 1; //In the event the hand has more than one ace, subsequent aces will need to be worth 1
             }
             return 11;
@@ -80,19 +68,33 @@ public class Round extends AdvancedRules {
         return currentPlayerCard.getValue(); //If it's not an ace just return the normal value
     }
 
-    public void playerHit() {
+    public void playerHit(int currentHandIndex) {
         currentPlayerCard = deck.draw();
-        allPlayerHands.get(0).add(currentPlayerCard);
-        playerHitCount++;
-        playerHardValue += aceValueHard(currentPlayerCard);
-        playerSoftValue += aceValueSoft(currentPlayerCard);
+        allPlayerHands.get(currentHandIndex).add(currentPlayerCard);
+        playerHitCount[currentHandIndex]++;
+        playerHardValue[currentHandIndex] += aceValueHard(currentPlayerCard);
+        playerSoftValue[currentHandIndex] += aceValueSoft(currentPlayerCard,playerSoftValue[currentHandIndex]);
     }
 
     /**
      * If the player stands, let the dealer draw
      */
     public void playerStand() {
-        dealerDraws();
+        currentHandIndex++;
+        if(currentHandIndex == allPlayerHands.size()) {
+            dealerDraws();
+        }
+    }
+
+    /**
+     *
+     * @param handToSplitIndex
+     */
+    public void splitHand(int handToSplitIndex) {
+        allPlayerHands.add(handToSplitIndex + 1,new ArrayList<>()); //Create a new ArrayList (hand) for allPlayerHands to ensure it can store the split
+        allPlayerHands.get(handToSplitIndex + 1).add(allPlayerHands.get(handToSplitIndex).remove(1)); //Move the last card from the hand-to-split into the next hand
+        allPlayerHands.get(handToSplitIndex).add(deck.draw()); //Draw a card for the original hand
+        allPlayerHands.get(handToSplitIndex + 1).add(deck.draw()); //Then draw a card for the split hand
     }
 
     /**
@@ -106,17 +108,20 @@ public class Round extends AdvancedRules {
             currentDealerCard = deck.draw();
             dealerHand.add(currentDealerCard);
             dealerHardValue += aceValueHard(currentDealerCard);
-            dealerSoftValue += aceValueSoft(currentDealerCard);
+            dealerSoftValue += aceValueSoft(currentDealerCard,dealerSoftValue);
         }
     }
 
-    public void calculateFinalValues() {
-        if(playerSoftValue > playerHardValue && playerSoftValue <= 21) {
-            finalPlayerValue = playerSoftValue;
+    public void calculateFinalPlayerValue(int currentHandIndex) {
+        if(playerSoftValue[currentHandIndex] > playerHardValue[currentHandIndex] && playerSoftValue[currentHandIndex] <= 21) {
+            finalPlayerValue[currentHandIndex] = playerSoftValue[currentHandIndex];
         }
         else {
-            finalPlayerValue = playerHardValue;
+            finalPlayerValue[currentHandIndex] = playerHardValue[currentHandIndex];
         }
+    }
+
+    public void calculateFinalDealerValue() {
         if(dealerSoftValue > dealerHardValue && dealerSoftValue <= 21) {
             finalDealerValue = dealerSoftValue;
         }
@@ -152,13 +157,16 @@ public class Round extends AdvancedRules {
      * Reset variables and hands before beginning another round
      * @return true if shuffling deck to engage print statement/animation, false otherwise
      */
-    public boolean resetRound() {
-        dealerHardValue = dealerSoftValue = playerHardValue = playerSoftValue = finalPlayerValue = finalDealerValue = 0;
+    public void resetRound() {
+        dealerHardValue = dealerSoftValue = finalDealerValue = currentHandIndex = 0;
+        Arrays.fill(playerHardValue, 0); Arrays.fill(playerSoftValue,0); Arrays.fill(finalPlayerValue,0); Arrays.fill(playerHitCount,0);
         isPlayerBlackjack = isDealerBlackjack = false;
-        allPlayerHands.get(0).clear();
-        allPlayerHands.get(1).clear();
+        allPlayerHands.clear();
+        allPlayerHands.add(new ArrayList<>()); //Clear removes inner linked lists, so you must add a new one so that future rounds can start
         dealerHand.clear();
-        playerHitCount = 0;
+    }
+
+    public boolean canShuffle() {
         if(deck.getTop() > (deck.getDeckSize() / 4)) { //OVER FOUR FOR NOW, LET PLAYER CHANGE/CHECK STANDARD SHUFFLE RATE LATER
             deck.shuffle();
             return true;
@@ -166,36 +174,25 @@ public class Round extends AdvancedRules {
         return false;
     }
 
-    public int getPlayerHardValue() {
-        return playerHardValue;
+    public int getPlayerHardValue(int currentHandIndex) {
+        return playerHardValue[currentHandIndex];
     }
 
-    public int getDealerHardValue() {
-        return dealerHardValue;
+    public int getPlayerSoftValue(int currentHandIndex) {
+        return playerSoftValue[currentHandIndex];
     }
 
-    public int getPlayerSoftValue() {
-        return playerSoftValue;
-    }
 
-    public int getDealerSoftValue() {
-        return dealerSoftValue;
-    }
-
-    public int getplayerHitCount() {
-        return playerHitCount;
-    }
-
-    public int getFinalPlayerValue() {
-        return finalPlayerValue;
+    public int getFinalPlayerValue(int currentHandIndex) {
+        return finalPlayerValue[currentHandIndex];
     }
 
     public int getFinalDealerValue() {
         return finalDealerValue;
     }
 
-    public ArrayList<Card> getPlayerHand(int i) {
-        return allPlayerHands.get(i);
+    public ArrayList<Card> getPlayerHand(int currentHandIndex) {
+        return allPlayerHands.get(currentHandIndex);
     }
 
     public LinkedList<ArrayList<Card>> getAllPlayerHands() {
@@ -204,5 +201,13 @@ public class Round extends AdvancedRules {
 
     public ArrayList<Card> getDealerHand() {
         return dealerHand;
+    }
+
+    public int getCurrentHandIndex() {
+        return currentHandIndex;
+    }
+
+    public void setCurrentHandIndex(int resetIndex) {
+        currentHandIndex = resetIndex;
     }
 }
